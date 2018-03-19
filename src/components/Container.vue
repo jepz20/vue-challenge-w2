@@ -8,6 +8,8 @@
 </template>
 
 <script>
+import { eventBus } from '../main'
+
 const MAX_LEVEL = 100
 export default {
   name: 'Container',
@@ -24,13 +26,13 @@ export default {
     }
   },
   created() {
-    window.bus.$on('channelIncrement', (data) => {
+    eventBus.$on('channelIncrement', (data) => {
       if (data.id === this.id) {
         this.changeLevel(data.value)
       }
     })
 
-    window.bus.$on('channelDecrement', (data) => {
+    eventBus.$on('channelDecrement', (data) => {
       if (data.id === this.id) {
         this.changeLevel(data.value*-1)
       }
@@ -43,12 +45,12 @@ export default {
   methods: {
     checkIsFull() {
       if (this.level >= MAX_LEVEL) {
-        window.bus.$emit('isFull', this.id)
+        eventBus.$emit('isFull', this.id)
       }
     },
     checkIsAtChannelLevel() {
       if (this.level >= this.channelLevel) {
-        window.bus.$emit('isAtChannelLevel', this.id)
+        eventBus.$emit('isAtChannelLevel', this.id)
       }
     },
     changeLevel (value) {
@@ -58,7 +60,6 @@ export default {
       } else {
         this.level = nextLevel
       }
-      console.log('HERE', this.level)
       this.checkIsFull()
       this.checkIsAtChannelLevel()
       console.log(this.level, this.channelLevel, this.id)
@@ -73,7 +74,7 @@ export default {
       if (this.level > this.channelLevel) {
         setTimeout(() =>
         {
-          window.bus.$emit('levelWater', {
+          eventBus.$emit('levelWater', {
             level: this.level,
             value,
             id: this.id
@@ -90,7 +91,7 @@ export default {
 <style scoped>
   .action {
     width: 50px;
-    top: 0;
+    top: 25px;
     margin-left: -20px;
     position: absolute;
   }

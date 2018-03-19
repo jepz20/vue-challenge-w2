@@ -1,17 +1,18 @@
 <template>
   <div id="app">
-    <Container v-bind="containers[0]"/>
-    <Channel v-bind="channel"/>
-    <Container v-bind="containers[1]"/>
+    <div class="tabs">
+      <span @click="setActive('A')" class="tab" :class="{active: active==='A'}">CAMERA A</span>
+      <span @click="setActive('B')" class="tab" :class="{active: active==='B'}">CAMERA B</span>
+    </div>
+    <container v-show="active==='A'" v-bind="containers[0]"/>
+    <channel v-bind="channel"/>
+    <container v-show="active==='B'" v-bind="containers[1]"/>
   </div>
 </template>
 
 <script>
 import Container from './components/Container.vue'
 import Channel from './components/Channel.vue'
-import Vue from 'vue'
-
-window.bus = new Vue()
 
 const App = {
   name: 'app',
@@ -36,8 +37,16 @@ const App = {
       containerLevel: 60,
       leftId: 'A',
       rightId: 'B'
+    },
+    selected: 'A',
+    active: 'A'
+  }),
+  methods: {
+    setActive(id) {
+      this.active = id
+      console.log(this.active)
     }
-  })
+  }
 }
 
 export default App
@@ -52,9 +61,12 @@ export default App
   color: #2c3e50;
   margin-top: 20px;
   height: 200px;
+  max-width: 300px;
+  padding-left: 50px;
   display: flex;
   align-items: flex-end;
   position: relative;
+  background-color:	#b2d8d8;
 
 }
 .row {
@@ -71,5 +83,21 @@ export default App
     color: white;
     text-align: center;
     font-size: 14px;
+}
+.tabs {
+  position: absolute;
+  top: 0;
+  display: flex;
+  width: 100%;
+  background: #696969;
+  left: 0;
+}
+.tab {
+  flex: 1;
+  justify-content: center
+}
+
+.active {
+  background-color:	#b2d8d8;
 }
 </style>

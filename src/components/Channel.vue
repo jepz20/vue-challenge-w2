@@ -8,7 +8,9 @@
 </template>
 
 <script>
+import { eventBus } from '../main'
 const MAX_LEVEL = 20
+
 export default {
   name: 'Container',
   props: {
@@ -37,17 +39,17 @@ export default {
     }
   },
   created() {
-    window.bus.$on('isAtChannelLevel', (id) => {
+    eventBus.$on('isAtChannelLevel', (id) => {
       if (this.left.id === id) this.left.isAtLevel = true
       if (this.right.id === id) this.right.isAtLevel = true
     })
 
-    window.bus.$on('isFull', (id) => {
+    eventBus.$on('isFull', (id) => {
       if (this.left.id === id) this.left.isFull = true
       if (this.right.id === id) this.right.isFull = true
     })
 
-    window.bus.$on('levelWater', (containerInfo) => {
+    eventBus.$on('levelWater', (containerInfo) => {
       let sendTo
       let receiveFrom
       const isLeft = containerInfo.id === this.left.id
@@ -64,6 +66,8 @@ export default {
         receiveFrom = this.right
       } else return
 
+
+
       if (sendTo.isFull) return
 
       if (this.containerAtLevel) {
@@ -77,12 +81,12 @@ export default {
         receiveFromVal = containerInfo.value - distributeVal
       }
 
-      window.bus.$emit('channelDecrement', {
+      eventBus.$emit('channelDecrement', {
         id: receiveFrom.id,
         value: receiveFromVal
       })
 
-      window.bus.$emit('channelIncrement', {
+      eventBus.$emit('channelIncrement', {
         id: sendTo.id,
         value: sendToVal
       })
