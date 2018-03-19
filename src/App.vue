@@ -1,24 +1,27 @@
 <template>
   <div id="app">
-    <div class="tabs">
-      <span @click="setActive('A')" class="tab" :class="{active: active==='A'}">CAMERA A</span>
-      <span @click="setActive('B')" class="tab" :class="{active: active==='B'}">CAMERA B</span>
-    </div>
-    <container v-show="active==='A'" v-bind="containers[0]"/>
-    <channel v-bind="channel"/>
-    <container v-show="active==='B'" v-bind="containers[1]"/>
+    <cameras>
+      <camera :key="container.id" v-for="container in containers" :id="container.id">
+        <container v-bind="container" />
+      </camera>
+    </cameras>
+    <channel v-show="false" v-bind="channel"/>
   </div>
 </template>
 
 <script>
 import Container from './components/Container.vue'
 import Channel from './components/Channel.vue'
+import Cameras from './components/Cameras.vue'
+import Camera from './components/Camera.vue'
 
 const App = {
   name: 'app',
   components: {
     Container,
-    Channel
+    Channel,
+    Cameras,
+    Camera
   },
   data: () => ({
     containers: [{
@@ -37,16 +40,8 @@ const App = {
       containerLevel: 60,
       leftId: 'A',
       rightId: 'B'
-    },
-    selected: 'A',
-    active: 'A'
-  }),
-  methods: {
-    setActive(id) {
-      this.active = id
-      console.log(this.active)
     }
-  }
+  })
 }
 
 export default App
@@ -62,7 +57,6 @@ export default App
   margin-top: 20px;
   height: 200px;
   max-width: 300px;
-  padding-left: 50px;
   display: flex;
   align-items: flex-end;
   position: relative;

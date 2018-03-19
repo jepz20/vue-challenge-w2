@@ -62,11 +62,9 @@ export default {
       }
       this.checkIsFull()
       this.checkIsAtChannelLevel()
-      console.log(this.level, this.channelLevel, this.id)
     },
     incrementLevel (value=20) {
       this.changeLevel(value)
-      console.log(this.level,Math.floor(this.level), 'ULTIMO')
       if (Math.floor(this.level) > MAX_LEVEL) {
         this.level = MAX_LEVEL
         return
@@ -91,7 +89,7 @@ export default {
 <style scoped>
   .action {
     width: 50px;
-    top: 25px;
+    top: 35px;
     margin-left: -20px;
     position: absolute;
   }
